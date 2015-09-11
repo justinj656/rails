@@ -71,7 +71,7 @@ module ActiveSupport
     NumberHelper.eager_load!
   end
 
-  @@test_order = nil
+  @@test_order = nil # class << self; attr_accessor :test_order; end
 
   def self.test_order=(new_order) # :nodoc:
     @@test_order = new_order

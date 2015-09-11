@@ -27,7 +27,7 @@ class Array
   #
   # There's also a related idiom that uses the splat operator:
   #
-  #   [*object]
+  #   [*object] # TODO: ??
   #
   # which returns <tt>[]</tt> for +nil+, but calls to <tt>Array(object)</tt> otherwise.
   #

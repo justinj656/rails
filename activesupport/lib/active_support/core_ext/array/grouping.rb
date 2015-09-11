@@ -29,7 +29,7 @@ class Array
       # size % number gives how many extra we have;
       # subtracting from number gives how many to add;
       # modulo number ensures we don't add group of just fill.
-      padding = (number - size % number) % number
+      padding = (number - size % number) % number # Attn: allow float here ??
       collection = dup.concat(Array.new(padding, fill_with))
     end
 
@@ -61,14 +61,14 @@ class Array
     # size.div number gives minor group size;
     # size % number gives how many objects need extra accommodation;
     # each group hold either division or division + 1 items.
-    division = size.div number
+    division = size.div number # Attn: the difference between fix.div and /, and why use div here?
     modulo = size % number
 
     # create a new array avoiding dup
     groups = []
     start = 0
 
-    number.times do |index|
+    number.times do |index| # Attn: times requries a Fixnum
       length = division + (modulo > 0 && modulo > index ? 1 : 0)
       groups << last_group = slice(start, length)
       last_group << fill_with if fill_with != false &&
@@ -88,6 +88,8 @@ class Array
   #
   #   [1, 2, 3, 4, 5].split(3)              # => [[1, 2], [4, 5]]
   #   (1..10).to_a.split { |i| i % 3 == 0 } # => [[1, 2], [4, 5], [7, 8], [10]]
+  #   [1, 2, 3].split(3)                    # => [[1, 2], []] Attn!
+  #   [1, 2, 3].split(1)                    # => [[], [2, 3]] Attn!
   def split(value = nil)
     if block_given?
       inject([[]]) do |results, element|

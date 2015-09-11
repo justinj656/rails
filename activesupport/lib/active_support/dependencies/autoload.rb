@@ -25,7 +25,7 @@ module ActiveSupport
   module Autoload
     def self.extended(base) # :nodoc:
       base.class_eval do
-        @_autoloads = {}
+        @_autoloads = {} # Attn: @_xxx means singleton variable
         @_under_path = nil
         @_at_path = nil
         @_eager_autoload = false
