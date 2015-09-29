@@ -94,7 +94,7 @@ module ActiveSupport
   #     end
   #   end
   #
-  #   class Host
+  #   class Host # JJ: this class do not extend ActiveSupport::Concern. Why!! Think about it.
   #     include Bar # It works, now Bar takes care of its dependencies
   #   end
   module Concern
@@ -113,7 +113,7 @@ module ActiveSupport
         base.instance_variable_get(:@_dependencies) << self
         return false
       else
-        return false if base < self
+        return false if base < self # JJ: instance method :< of Module
         @_dependencies.each { |dep| base.send(:include, dep) }
         super
         base.extend const_get(:ClassMethods) if const_defined?(:ClassMethods)
@@ -121,13 +121,13 @@ module ActiveSupport
       end
     end
 
-    def included(base = nil, &block)
-      if base.nil?
+    def included(base = nil, &block) # JJ: Dual roles
+      if base.nil? # JJ: call by the user
         raise MultipleIncludedBlocks if instance_variable_defined?(:@_included_block)
 
         @_included_block = block
-      else
-        super
+      else # JJ: for callback
+        super # JJ: What does Module's private method included for?
       end
     end
 
