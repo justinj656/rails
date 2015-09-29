@@ -74,7 +74,7 @@ class Array
     when 0
       ''
     when 1
-      self[0].to_s.dup
+      self[0].to_s.dup # Attn: str.to_s return itself
     when 2
       "#{self[0]}#{options[:two_words_connector]}#{self[1]}"
     else
@@ -176,7 +176,7 @@ class Array
   #     </message>
   #   </messages>
   #
-  def to_xml(options = {})
+  def to_xml(options = {}) # TODO: to read
     require 'active_support/builder' unless defined?(Builder)
 
     options = options.dup

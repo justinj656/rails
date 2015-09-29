@@ -7,7 +7,7 @@ class Array
   #   %w().from(0)           # => []
   #   %w( a b c d ).from(-2) # => ["c", "d"]
   #   %w( a b c ).from(-10)  # => []
-  def from(position) # Extend the drop() to allow negative position.
+  def from(position) # JJ: extend the drop() to allow negative position.
     self[position, length] || []
   end
 
@@ -19,7 +19,7 @@ class Array
   #   %w().to(0)           # => []
   #   %w( a b c d ).to(-2) # => ["a", "b", "c"]
   #   %w( a b c ).to(-10)  # => []
-  def to(position) # Extend the take()/first() to allow negative position.
+  def to(position) # JJ: extend the take()/first() to allow negative position.
     if position >= 0
       first position + 1
     else

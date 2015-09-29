@@ -4,7 +4,7 @@ class Hash
   # true to declare themselves as extractable. If a Hash
   # is extractable, Array#extract_options! pops it from
   # the Array when it is the last element of the Array.
-  def extractable_options? # allow the subclass of Hash to declare if itself is extractable.
+  def extractable_options? # JJ: allow the subclass of Hash to declare if itself is extractable.
     instance_of?(Hash)
   end
 end
