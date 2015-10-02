@@ -14,7 +14,7 @@ class Object
   #
   # @return [true, false]
   def blank?
-    respond_to?(:empty?) ? !!empty? : !self
+    respond_to?(:empty?) ? !!empty? : !self # Attn: the use of !!; what !self means?
   end
 
   # An object is present if it's not blank.
@@ -85,7 +85,7 @@ class Array
   #   [1,2,3].blank? # => false
   #
   # @return [true, false]
-  alias_method :blank?, :empty?
+  alias_method :blank?, :empty? # TODO: dig into it!
 end
 
 class Hash
@@ -114,7 +114,7 @@ class String
   #
   # @return [true, false]
   def blank?
-    BLANK_RE === self
+    BLANK_RE === self # Attn: ===
   end
 end
 

@@ -58,7 +58,7 @@ class Object
   # with instances of classes that do not have +Object+ among their ancestors,
   # like direct subclasses of +BasicObject+. For example, using +try+ with
   # +SimpleDelegator+ will delegate +try+ to the target instead of calling it on
-  # the delegator itself.
+  # the delegator itself. # Attn: this paragraph
   def try(*a, &b)
     try!(*a, &b) if a.empty? || respond_to?(a.first)
   end

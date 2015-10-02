@@ -10,7 +10,7 @@ class Object
   #
   #   C.new(0, 1).instance_values # => {"x" => 0, "y" => 1}
   def instance_values
-    Hash[instance_variables.map { |name| [name[1..-1], instance_variable_get(name)] }]
+    Hash[instance_variables.map { |name| [name[1..-1], instance_variable_get(name)] }] # Attn: sym[] => sym.to_s[]
   end
 
   # Returns an array of instance variable names as strings including "@".

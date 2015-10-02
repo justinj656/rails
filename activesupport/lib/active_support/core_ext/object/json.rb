@@ -1,4 +1,4 @@
-# Hack to load json gem first so we can overwrite its to_json.
+# Hack to load json gem first so we can overwrite its to_json. # TODO: Read
 require 'json'
 require 'bigdecimal'
 require 'active_support/core_ext/big_decimal/conversions' # for #to_s

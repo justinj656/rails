@@ -39,7 +39,7 @@ class Hash
   #   hash[:a][:c] # => nil
   #   dup[:a][:c]  # => "c"
   def deep_dup
-    each_with_object(dup) do |(key, value), hash|
+    each_with_object(dup) do |(key, value), hash| # Attn: each_with_object
       hash[key.deep_dup] = value.deep_dup
     end
   end

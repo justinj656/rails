@@ -176,7 +176,7 @@ class Array
   #     </message>
   #   </messages>
   #
-  def to_xml(options = {}) # TODO: to read
+  def to_xml(options = {}) # TODO: Read
     require 'active_support/builder' unless defined?(Builder)
 
     options = options.dup
