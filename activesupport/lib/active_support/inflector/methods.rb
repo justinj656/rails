@@ -72,7 +72,7 @@ module ActiveSupport
       else
         string = string.sub(/^(?:#{inflections.acronym_regex}(?=\b|[A-Z_])|\w)/) { $&.downcase }
       end
-      string.gsub!(/(?:_|(\/))([a-z\d]*)/i) { "#{$1}#{inflections.acronyms[$2] || $2.capitalize}" }
+      string.gsub!(/(?:_|(\/))([a-z\d]*)/i) { "#{$1}#{inflections.acronyms[$2] || $2.capitalize}" }# JJ: captures inside (?:) take effect
       string.gsub!(/\//, '::')
       string
     end
@@ -91,10 +91,10 @@ module ActiveSupport
     def underscore(camel_cased_word)
       return camel_cased_word unless camel_cased_word =~ /[A-Z-]|::/
       word = camel_cased_word.to_s.gsub(/::/, '/')
-      word.gsub!(/(?:(?<=([A-Za-z\d]))|\b)(#{inflections.acronym_regex})(?=\b|[^a-z])/) { "#{$1 && '_'}#{$2.downcase}" }
+      word.gsub!(/(?:(?<=([A-Za-z\d]))|\b)(#{inflections.acronym_regex})(?=\b|[^a-z])/) { "#{$1 && '_'}#{$2.downcase}" } # JJ: '&&'
       word.gsub!(/([A-Z\d]+)([A-Z][a-z])/,'\1_\2')
       word.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
-      word.tr!("-", "_")
+      word.tr!("-", "_") # JJ: str.tr!, 'tr' means translate
       word.downcase!
       word
     end
@@ -103,12 +103,12 @@ module ActiveSupport
     #
     # Specifically, +humanize+ performs these transformations:
     #
-    #   * Applies human inflection rules to the argument.
-    #   * Deletes leading underscores, if any.
-    #   * Removes a "_id" suffix if present.
-    #   * Replaces underscores with spaces, if any.
-    #   * Downcases all words except acronyms.
-    #   * Capitalizes the first word.
+    #   * Applies human inflection rules to the argument. # JJ: p1
+    #   * Deletes leading underscores, if any. # JJ: p2
+    #   * Removes a "_id" suffix if present. # JJ: p3
+    #   * Replaces underscores with spaces, if any. # JJ: p4
+    #   * Downcases all words except acronyms. # JJ: p5
+    #   * Capitalizes the first word. # JJ: p6
     #
     # The capitalization of the first word can be turned off by setting the
     # +:capitalize+ option to false (default is true).
@@ -125,18 +125,18 @@ module ActiveSupport
     def humanize(lower_case_and_underscored_word, options = {})
       result = lower_case_and_underscored_word.to_s.dup
 
-      inflections.humans.each { |(rule, replacement)| break if result.sub!(rule, replacement) }
+      inflections.humans.each { |(rule, replacement)| break if result.sub!(rule, replacement) } # JJ: p1
 
-      result.sub!(/\A_+/, '')
-      result.sub!(/_id\z/, '')
-      result.tr!('_', ' ')
+      result.sub!(/\A_+/, '') # JJ: p2
+      result.sub!(/_id\z/, '') # JJ: p3
+      result.tr!('_', ' ') # JJ: p4
 
-      result.gsub!(/([a-z\d]*)/i) do |match|
-        "#{inflections.acronyms[match] || match.downcase}"
+      result.gsub!(/([a-z\d]*)/i) do |match| # JJ: match means $&
+        "#{inflections.acronyms[match] || match.downcase}" # JJ: p5
       end
 
       if options.fetch(:capitalize, true)
-        result.sub!(/\A\w/) { |match| match.upcase }
+        result.sub!(/\A\w/) { |match| match.upcase } ## JJ: p6
       end
 
       result
@@ -153,7 +153,7 @@ module ActiveSupport
     #   'TheManWithoutAPast'.titleize       # => "The Man Without A Past"
     #   'raiders_of_the_lost_ark'.titleize  # => "Raiders Of The Lost Ark"
     def titleize(word)
-      humanize(underscore(word)).gsub(/\b(?<!['’`])[a-z]/) { $&.capitalize }
+      humanize(underscore(word)).gsub(/\b(?<!['’`])[a-z]/) { $&.capitalize } # JJ: ?? ['’`]
     end
 
     # Create the name of a table like Rails does for models to table names. This
@@ -233,7 +233,7 @@ module ActiveSupport
     #
     #   'Module'.constantize     # => Module
     #   'Test::Unit'.constantize # => Test::Unit
-    #
+    # # Attn:
     # The name is assumed to be the one of a top-level constant, no matter
     # whether it starts with "::" or not. No lexical context is taken into
     # account:
@@ -247,7 +247,7 @@ module ActiveSupport
     #
     # NameError is raised when the name is not in CamelCase or the constant is
     # unknown.
-    def constantize(camel_cased_word)
+    def constantize(camel_cased_word) # Attn: Top-level or "global" constants defined in Object
       names = camel_cased_word.split('::')
 
       # Trigger a built-in NameError exception including the ill-formed constant in the message.
@@ -256,7 +256,7 @@ module ActiveSupport
       # Remove the first blank element in case of '::ClassName' notation.
       names.shift if names.size > 1 && names.first.empty?
 
-      names.inject(Object) do |constant, name|
+      names.inject(Object) do |constant, name| # TODO: read text case
         if constant == Object
           constant.const_get(name)
         else
@@ -300,7 +300,7 @@ module ActiveSupport
     #   'blargle'.safe_constantize  # => nil
     #   'UnknownModule'.safe_constantize  # => nil
     #   'UnknownModule::Foo::Bar'.safe_constantize  # => nil
-    def safe_constantize(camel_cased_word)
+    def safe_constantize(camel_cased_word) # JJ: ??
       constantize(camel_cased_word)
     rescue NameError => e
       raise if e.name && !(camel_cased_word.to_s.split("::").include?(e.name.to_s) ||

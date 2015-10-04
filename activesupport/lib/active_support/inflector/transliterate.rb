@@ -78,7 +78,7 @@ module ActiveSupport
     #
     #   <%= link_to(@person.name, person_path(@person)) %>
     #   # => <a href="/person/1-donald-e-knuth">Donald E. Knuth</a>
-    def parameterize(string, sep = '-')
+    def parameterize(string, sep = '-') # TODO: read the test case
       # replace accented chars with their ascii equivalents
       parameterized_string = transliterate(string)
       # Turn unwanted chars into the separator

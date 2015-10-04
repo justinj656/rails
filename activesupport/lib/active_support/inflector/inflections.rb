@@ -12,7 +12,7 @@ module ActiveSupport
     # default locale is <tt>:en</tt>. Only rules for English are provided.
     #
     #   ActiveSupport::Inflector.inflections(:en) do |inflect|
-    #     inflect.plural /^(ox)$/i, '\1\2en'
+    #     inflect.plural /^(ox)$/i, '\1\2en' # JJ: where is "\2" ??
     #     inflect.singular /^(ox)en/i, '\1'
     #
     #     inflect.irregular 'octopus', 'octopi'
@@ -34,7 +34,7 @@ module ActiveSupport
       attr_reader :plurals, :singulars, :uncountables, :humans, :acronyms, :acronym_regex
 
       def initialize
-        @plurals, @singulars, @uncountables, @humans, @acronyms, @acronym_regex = [], [], [], [], {}, /(?=a)b/
+        @plurals, @singulars, @uncountables, @humans, @acronyms, @acronym_regex = [], [], [], [], {}, /(?=a)b/ # JJ: match nothing
       end
 
       # Private, for the test suite.
@@ -142,7 +142,7 @@ module ActiveSupport
           singular(/(#{s0})#{srest}$/i, '\1' + srest)
           singular(/(#{p0})#{prest}$/i, '\1' + srest)
         else
-          plural(/#{s0.upcase}(?i)#{srest}$/,   p0.upcase   + prest)
+          plural(/#{s0.upcase}(?i)#{srest}$/,   p0.upcase   + prest) # JJ: (?i) case-insensitive while matching the right
           plural(/#{s0.downcase}(?i)#{srest}$/, p0.downcase + prest)
           plural(/#{p0.upcase}(?i)#{prest}$/,   p0.upcase   + prest)
           plural(/#{p0.downcase}(?i)#{prest}$/, p0.downcase + prest)
@@ -160,7 +160,7 @@ module ActiveSupport
       #   uncountable 'money', 'information'
       #   uncountable %w( money information rice )
       def uncountable(*words)
-        @uncountables += words.flatten.map(&:downcase)
+        @uncountables += words.flatten.map(&:downcase) # JJ: '&:downcase', passed as a block; ':downcase', passed as a method name; map only accepts block
       end
 
       # Specifies a humanized form of a string by a regular expression rule or
@@ -169,7 +169,7 @@ module ActiveSupport
       # string is used, the human form should be specified as desired (example:
       # 'The name', not 'the_name').
       #
-      #   human /_cnt$/i, '\1_count'
+      #   human /_cnt$/i, '\1_count' # JJ: ?? what does '\1' stands for, when there is no capture
       #   human 'legacy_col_person_name', 'Name'
       def human(rule, replacement)
         @humans.prepend([rule, replacement])
