@@ -4,13 +4,13 @@ class String
   # Returns the indented string, or +nil+ if there was nothing to indent.
   def indent!(amount, indent_string=nil, indent_empty_lines=false)
     indent_string = indent_string || self[/^[ \t]/] || ' '
-    re = indent_empty_lines ? /^/ : /^(?!$)/
+    re = indent_empty_lines ? /^/ : /^(?!$)/ # JJ: (?!), negative lookahead
     gsub!(re, indent_string * amount)
   end
 
   # Indents the lines in the receiver:
   #
-  #   <<EOS.indent(2)
+  #   <<EOS.indent(2) # TIP: specail usage
   #   def some_method
   #     some_code
   #   end
@@ -41,3 +41,8 @@ class String
     dup.tap {|_| _.indent!(amount, indent_string, indent_empty_lines)}
   end
 end
+
+# JJ ---
+# obj.tap{|x|...} → obj
+# Yields self to the block, and then returns self. The primary purpose of this method is to “tap into” a method chain, in order to perform operations on intermediate results within the chain.
+# str.gsub!, do not always return the receiver, that is, return nil when no substitution happens.

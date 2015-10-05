@@ -4,7 +4,7 @@ class String
   #
   #   "hello".exclude? "lo" # => false
   #   "hello".exclude? "ol" # => true
-  #   "hello".exclude? ?h   # => false
+  #   "hello".exclude? ?h   # => false # JJ: Usage of '?' + /char
   def exclude?(string)
     !include?(string)
   end

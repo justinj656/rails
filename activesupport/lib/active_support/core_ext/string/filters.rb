@@ -93,7 +93,7 @@ class String
   #   # => "And they found that many... (continued)"
   def truncate_words(words_count, options = {})
     sep = options[:separator] || /\s+/
-    sep = Regexp.escape(sep.to_s) unless Regexp === sep
+    sep = Regexp.escape(sep.to_s) unless Regexp === sep # JJ: Escapes any characters that would have special meaning in a regular expression.
     if self =~ /\A((?>.+?#{sep}){#{words_count - 1}}.+?)#{sep}.*/m
       $1 + (options[:omission] || '...')
     else

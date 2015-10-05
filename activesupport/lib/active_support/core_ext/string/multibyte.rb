@@ -1,5 +1,5 @@
 # encoding: utf-8
-require 'active_support/multibyte'
+require 'active_support/multibyte' # TODO: read
 
 class String
   # == Multibyte proxy

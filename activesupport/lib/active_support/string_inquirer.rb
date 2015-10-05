@@ -7,7 +7,7 @@ module ActiveSupport
   #
   # you can call this:
   #
-  #   Rails.env.production?
+  #   Rails.env.production? # TIP
   class StringInquirer < String
     private
 

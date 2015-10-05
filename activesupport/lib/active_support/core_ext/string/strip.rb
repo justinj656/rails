@@ -6,7 +6,7 @@ class String
   # For example in
   #
   #   if options[:usage]
-  #     puts <<-USAGE.strip_heredoc
+  #     puts <<-USAGE.strip_heredoc # heredocs begin with '<<' or '<<-'
   #       This command does such and such.
   #
   #       Supported options are:
