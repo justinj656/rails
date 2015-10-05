@@ -19,7 +19,7 @@ class Hash
   #   valid_keys = [:mass, :velocity, :time]
   #   search(options.slice(*valid_keys))
   def slice(*keys)
-    keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true)
+    keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true) # JJ: convert_key ??
     keys.each_with_object(self.class.new) { |k, hash| hash[k] = self[k] if has_key?(k) }
   end
 
@@ -32,7 +32,7 @@ class Hash
     keys.map! { |key| convert_key(key) } if respond_to?(:convert_key, true)
     omit = slice(*self.keys - keys)
     hash = slice(*keys)
-    hash.default      = default
+    hash.default      = default # JJ: why to copy the default and proc here, but not in slice
     hash.default_proc = default_proc if default_proc
     replace(hash)
     omit

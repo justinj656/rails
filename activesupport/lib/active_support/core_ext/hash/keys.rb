@@ -6,7 +6,7 @@ class Hash
   #  hash.transform_keys{ |key| key.to_s.upcase }
   #  # => {"NAME"=>"Rob", "AGE"=>"28"}
   def transform_keys
-    return enum_for(:transform_keys) unless block_given?
+    return enum_for(:transform_keys) unless block_given? # JJ: enum_for = to_enum
     result = self.class.new
     each_key do |key|
       result[yield(key)] = self[key]
@@ -48,7 +48,7 @@ class Hash
   #   hash.symbolize_keys
   #   # => {:name=>"Rob", :age=>"28"}
   def symbolize_keys
-    transform_keys{ |key| key.to_sym rescue key }
+    transform_keys{ |key| key.to_sym rescue key } # JJ: if do not respond to to_sym, return itself
   end
   alias_method :to_options,  :symbolize_keys
 
@@ -139,7 +139,7 @@ class Hash
     def _deep_transform_keys_in_object(object, &block)
       case object
       when Hash
-        object.each_with_object({}) do |(key, value), result|
+        object.each_with_object({}) do |(key, value), result| # JJ: each_with_object v.s. inject
           result[yield(key)] = _deep_transform_keys_in_object(value, &block)
         end
       when Array

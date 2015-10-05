@@ -23,7 +23,7 @@ class Hash
       this_value = self[current_key]
 
       self[current_key] = if this_value.is_a?(Hash) && other_value.is_a?(Hash)
-        this_value.deep_merge(other_value, &block)
+        this_value.deep_merge(other_value, &block) # JJ: extra dup, WHY!!!
       else
         if block_given? && key?(current_key)
           block.call(current_key, this_value, other_value)
