@@ -15,7 +15,7 @@ class Range #:nodoc:
   alias_method_chain :step, :time_with_zone
 
   private
-  def ensure_iteration_allowed
+  def ensure_iteration_allowed # JJ: ruby already forbid iteration from range. ??
     if first.is_a?(Time)
       raise TypeError, "can't iterate from #{first.class}"
     end
