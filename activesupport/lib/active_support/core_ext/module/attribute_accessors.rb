@@ -53,7 +53,7 @@ class Module
   def mattr_reader(*syms)
     options = syms.extract_options!
     syms.each do |sym|
-      raise NameError.new("invalid attribute name: #{sym}") unless sym =~ /^[_A-Za-z]\w*$/
+      raise NameError.new("invalid attribute name: #{sym}") unless sym =~ /^[_A-Za-z]\w*$/ # Attn: 0 does not mean false in ruby !!
       class_eval(<<-EOS, __FILE__, __LINE__ + 1)
         @@#{sym} = nil unless defined? @@#{sym}
 
@@ -135,7 +135,7 @@ class Module
           end
         EOS
       end
-      send("#{sym}=", yield) if block_given?
+      send("#{sym}=", yield) if block_given? # JJ: if there is a setter, do not access the variable directly
     end
   end
   alias :cattr_writer :mattr_writer
@@ -206,7 +206,7 @@ class Module
   #   Person.class_variable_get("@@hair_colors") #=> [:brown, :black, :blonde, :red]
   def mattr_accessor(*syms, &blk)
     mattr_reader(*syms, &blk)
-    mattr_writer(*syms, &blk)
+    mattr_writer(*syms, &blk) # JJ: no need to pass twice blk ??
   end
   alias :cattr_accessor :mattr_accessor
 end

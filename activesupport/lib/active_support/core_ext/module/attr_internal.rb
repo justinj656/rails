@@ -22,7 +22,7 @@ class Module
 
   private
     def attr_internal_ivar_name(attr)
-      Module.attr_internal_naming_format % attr
+      Module.attr_internal_naming_format % attr # Attn: format operator of string
     end
 
     def attr_internal_define(attr_name, type)

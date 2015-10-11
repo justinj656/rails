@@ -32,7 +32,7 @@ class Module
     alias_method without_method, target
     alias_method target, with_method
 
-    case
+    case # JJ: make the target have the same access level with without_method
     when public_method_defined?(without_method)
       public target
     when protected_method_defined?(without_method)
@@ -59,7 +59,7 @@ class Module
   #   e.subject? # => true
   #   e.subject = "Megastars"
   #   e.title    # => "Megastars"
-  def alias_attribute(new_name, old_name)
+  def alias_attribute(new_name, old_name) # JJ: why do not use three method aliases ??
     module_eval <<-STR, __FILE__, __LINE__ + 1
       def #{new_name}; self.#{old_name}; end          # def subject; self.title; end
       def #{new_name}?; self.#{old_name}?; end        # def subject?; self.title?; end

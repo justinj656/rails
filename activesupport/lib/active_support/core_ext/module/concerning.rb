@@ -1,6 +1,6 @@
 require 'active_support/concern'
 
-class Module
+class Module # TODO: do not very understand
   # = Bite-sized separation of concerns
   #
   # We often find ourselves with a medium-sized chunk of behavior that we'd

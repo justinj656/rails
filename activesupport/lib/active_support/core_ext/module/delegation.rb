@@ -87,7 +87,7 @@ class Module
   # is <tt>true</tt>, the delegate methods are prefixed with the name of the object being
   # delegated to.
   #
-  #   Person = Struct.new(:name, :address)
+  #   Person = Struct.new(:name, :address) # JJ: ?? what the Struct is
   #
   #   class Invoice < Struct.new(:client)
   #     delegate :name, :address, to: :client, prefix: true
@@ -154,20 +154,20 @@ class Module
       raise ArgumentError, 'Delegation needs a target. Supply an options hash with a :to key as the last argument (e.g. delegate :hello, to: :greeter).'
     end
 
-    prefix, allow_nil = options.values_at(:prefix, :allow_nil)
+    prefix, allow_nil = options.values_at(:prefix, :allow_nil) # TIP: avoid redundant code
 
     if prefix == true && to =~ /^[^a-z_]/
       raise ArgumentError, 'Can only automatically set the delegation prefix when delegating to a method.'
     end
 
-    method_prefix = \
+    method_prefix = \ # TIP: nice way to indent!
       if prefix
         "#{prefix == true ? to : prefix}_"
       else
         ''
       end
 
-    file, line = caller.first.split(':', 2)
+    file, line = caller.first.split(':', 2) # JJ: the 2nd arg
     line = line.to_i
 
     to = to.to_s
@@ -189,7 +189,7 @@ class Module
         method_def = [
           "def #{method_prefix}#{method}(#{definition})",
           "_ = #{to}",
-          "if !_.nil? || nil.respond_to?(:#{method})",
+          "if !_.nil? || nil.respond_to?(:#{method})", # JJ: notice the return value of 'if'
           "  _.#{method}(#{definition})",
           "end",
         "end"
